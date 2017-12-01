@@ -15,7 +15,7 @@ controls.addEventListener('change', render); // remove when using animation loop
 // enable animation loop when using damping or autorotation
 //controls.enableDamping = true;
 //controls.dampingFactor = 0.25;
-controls.enableZoom = false;
+// controls.enableZoom = false;
 
 //controls.update() must be called after any manual changes to the camera's transform
 camera.position.set(0, 20, 150);
@@ -73,7 +73,7 @@ function getHeightData(image) {
     for (var i = 0; i < pixels.length; i += 4) {
         // why 4??
         var all = pixels[i] + pixels[i + 1] + pixels[i + 2];
-        data[j++] = all / (12 * scale);
+        data[j++] = all / (48 * scale);
     }
     return data;
 }
