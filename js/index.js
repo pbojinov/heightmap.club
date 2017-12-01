@@ -1,62 +1,33 @@
 'use strict';
 
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+var stats;
 
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-function buildCube() {
-    var geometry = new THREE.BoxGeometry(1, 1, 1);
-    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
-    var cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-}
+var scene = new THREE.Scene();
+// var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
 
-// buildCube();
+var controls = new THREE.OrbitControls(camera);
 
-// var loader = new THREE.TextureLoader();
-// loader.load(
-//     // resource URL
-//     'assets/map_small.png',
-//     imageUrl,
-//     // Function when resource is loaded
-//     function(texture) {
-//         console.log('done loading', texture);
-//         // var geometry = new THREE.PlaneGeometry(5, 20, 32);
-//         // in this example we create the material when the texture is loaded
-//         // var material = new THREE.MeshBasicMaterial({ map: texture });
-//         // var material = new THREE.MeshLambertMaterial({ map: texture });
-//         // var plane = new THREE.Mesh(geometry, material);
-//         // scene.add(plane);
-//         // var geometry = new THREE.BoxGeometry(1, 1, 1);
-//         // var material = new THREE.MeshBasicMaterial({ map: texture });
-//         // var material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
-//         // var cube = new THREE.Mesh(geometry, material);
-//         // scene.add(cube);
-//     },
-//     // Function called when download progresses
-//     function(xhr) {
-//         console.log('done loading');
-//         console.log(xhr.loaded / xhr.total * 100 + '% loaded');
-//     },
-//     // Function called when download errors
-//     function(xhr) {
-//         console.error('An error happened', xhr);
-//     }
-// );
+//controls.update() must be called after any manual changes to the camera's transform
+camera.position.set(0, 20, 100);
+controls.update();
 
-// var geometry = new THREE.PlaneGeometry(5, 20, 32);
-// var material = new THREE.MeshBasicMaterial( {color: 0xffff00, wireframe: true} );
-// const texture = new THREE.TextureLoader().load(imageUrl);
-// const texture = THREE.ImageUtils.loadTexture(imageUrl);
-// const material = new THREE.MeshLambertMaterial({ map: texture });
-// const material = new THREE.MeshLambertMaterial({color: 0xffff00});
-// var plane = new THREE.Mesh(geometry, material);
-// scene.add(plane);
+stats = new Stats();
+document.body.appendChild(stats.dom);
+
+window.addEventListener('resize', onWindowResize, false);
 
 camera.position.z = 100;
+
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
 function animate() {
     requestAnimationFrame(animate);
@@ -64,6 +35,9 @@ function animate() {
     // 	cube.rotation.x -= 0.01;
     // 	cube.rotation.y += 0.01;
     // }
+    // required if controls.enableDamping or controls.autoRotate are set to true
+    controls.update();
+    stats.update();
     renderer.render(scene, camera);
 }
 
@@ -130,3 +104,52 @@ image.onerror = function() {
 image.src = imageUrl;
 
 // document.getElementById('app').appendChild(img);
+
+function buildCube() {
+    var geometry = new THREE.BoxGeometry(1, 1, 1);
+    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+}
+
+// buildCube();
+
+// var loader = new THREE.TextureLoader();
+// loader.load(
+//     // resource URL
+//     'assets/map_small.png',
+//     imageUrl,
+//     // Function when resource is loaded
+//     function(texture) {
+//         console.log('done loading', texture);
+//         // var geometry = new THREE.PlaneGeometry(5, 20, 32);
+//         // in this example we create the material when the texture is loaded
+//         // var material = new THREE.MeshBasicMaterial({ map: texture });
+//         // var material = new THREE.MeshLambertMaterial({ map: texture });
+//         // var plane = new THREE.Mesh(geometry, material);
+//         // scene.add(plane);
+//         // var geometry = new THREE.BoxGeometry(1, 1, 1);
+//         // var material = new THREE.MeshBasicMaterial({ map: texture });
+//         // var material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+//         // var cube = new THREE.Mesh(geometry, material);
+//         // scene.add(cube);
+//     },
+//     // Function called when download progresses
+//     function(xhr) {
+//         console.log('done loading');
+//         console.log(xhr.loaded / xhr.total * 100 + '% loaded');
+//     },
+//     // Function called when download errors
+//     function(xhr) {
+//         console.error('An error happened', xhr);
+//     }
+// );
+
+// var geometry = new THREE.PlaneGeometry(5, 20, 32);
+// var material = new THREE.MeshBasicMaterial( {color: 0xffff00, wireframe: true} );
+// const texture = new THREE.TextureLoader().load(imageUrl);
+// const texture = THREE.ImageUtils.loadTexture(imageUrl);
+// const material = new THREE.MeshLambertMaterial({ map: texture });
+// const material = new THREE.MeshLambertMaterial({color: 0xffff00});
+// var plane = new THREE.Mesh(geometry, material);
+// scene.add(plane);
