@@ -3,25 +3,32 @@
 var stats;
 
 var renderer = new THREE.WebGLRenderer();
+renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 var scene = new THREE.Scene();
-// var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
 
 var controls = new THREE.OrbitControls(camera);
+controls.addEventListener('change', render); // remove when using animation loop
+// enable animation loop when using damping or autorotation
+//controls.enableDamping = true;
+//controls.dampingFactor = 0.25;
+controls.enableZoom = false;
 
 //controls.update() must be called after any manual changes to the camera's transform
-camera.position.set(0, 20, 100);
+camera.position.set(0, 20, 150);
 controls.update();
+// controls.minAzimuthAngle = Math.PI;
+// controls.maxAzimuthAngle = 0;
+// controls.maxPolarAngle = Math.PI;
 
 stats = new Stats();
+stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 document.body.appendChild(stats.dom);
 
 window.addEventListener('resize', onWindowResize, false);
-
-camera.position.z = 100;
 
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -38,6 +45,10 @@ function animate() {
     // required if controls.enableDamping or controls.autoRotate are set to true
     controls.update();
     stats.update();
+    render();
+}
+
+function render() {
     renderer.render(scene, camera);
 }
 
