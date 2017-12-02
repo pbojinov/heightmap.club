@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+        }
+
+        img,
+        .controls {
+            z-index: 2;
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        img {
+            width: 500px;
+        }
+
+        .controls {
+            z-index: 3;
+            /* top: 10px; */
+            /* right: 10px; */
+        }
+    </style>
+</head>
+
+<body>
+    <video autoplay></video>
+    <div class="controls">
+        <!-- <button class="btn" onclick="grayscale()">grayscale</button> -->
+        <!-- <button class="btn" onclick="channels()">channels</button> -->
+        <!-- <button class="btn" onclick="edge()">edge</button> -->
+    </div>
+    <script>
+        var video = document.querySelector('video');
+        var canvas;
+
+        /**
+         *  https://gist.github.com/anantn/1852070#gistcomment-1983484
+         *  generates a still frame image from the stream in the <video>
+         *  appends the image to the <body>
+         */
+        function takeSnapshot() {
+            var img = document.querySelector('img') || document.createElement('img');
+            var context;
+            var width = video.offsetWidth;
+            var height = video.offsetHeight;
+
+            canvas = canvas || document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+
+            context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, width, height);
+
+            /// ------------------------------------------------------------
+            /// INJECT FILTERS
+            /// ------------------------------------------------------------
+            // create an ImageData of the right half of the image
+            // so we can see what happend
+            var imageData = context.getImageData(0, 0, width, height);
+
+            // apply a Mosaic filter with a blocksize of 10
+            // var filtered = ImageFilters.Binarize(imageData, 1);
+            var filtered = ImageFilters.Channels(imageData, 1);
+            // var filtered = ImageFilters.Edge(imageData, 1);
+
+            // put back the ImageData to the context
+            context.putImageData(filtered, 0, 0);
+            /// ------------------------------------------------------------
+
+            img.src = canvas.toDataURL('image/png');
+            document.body.appendChild(img);
+        }
+
+        // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+        if (navigator.mediaDevices) {
+            var reduceVideoFactor = 1;
+            var constraints = {
+                video: {
+                    width: 1280 / reduceVideoFactor,
+                    height: 720 / reduceVideoFactor
+                },
+                audio: false,
+            };
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(function (mediaStream) {
+                    /* use the stream */
+                    video.srcObject = mediaStream;
+                    video.onloadedmetadata = function (e) {
+                        video.play();
+                    };
+                    // video.src = window.URL.createObjectURL(mediaStream); // same as above
+                    // video.addEventListener('click', takeSnapshot);
+                    document.body.addEventListener('click', takeSnapshot);
+                })
+                .catch(function (err) {
+                    console.log(err.name + ": " + err.message);
+                    /* handle the error */
+                });
+        }
+    </script>
+    <script type="text/javascript" src="vendor/imagefilters.js"></script>
+</body>
+
+</html>

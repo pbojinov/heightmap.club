@@ -101,7 +101,10 @@ function main() {
 // const imageUrl = "https://upload.wikimedia.org/wikipedia/commons/5/57/Heightmap.png";
 // var imageUrl = "https://3.bp.blogspot.com/-IOkIz3Eezc4/Uiyl-h4LmdI/AAAAAAAAANs/NByTUB4UZ1U/s1600/heightmap2_big.png";
 // var imageUrl = 'assets/map_small.png';
-var imageUrl = 'assets/clouds.png';
+// var imageUrl = 'assets/clouds.png';
+// var imageUrl = 'assets/download.png';
+// var imageUrl = 'assets/jellyfish.png';
+var imageUrl = 'assets/pixelated.png';
 var image = new Image();
 // this prevents the following error: "The canvas has been tainted by cross-origin data"
 // https://stackoverflow.com/a/27840082/907388
