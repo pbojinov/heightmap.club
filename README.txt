@@ -7,3 +7,7 @@ A Pen created at CodePen.io. You can find this one at https://codepen.io/pbojino
  # Resources
 
  http://danni-three.blogspot.com/2013/09/threejs-heightmaps.html
+
+ https://github.com/neilcarpenter/Video-filter-effects-for-canvas
+ 
+ http://html5doctor.com/video-canvas-magic/
