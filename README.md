@@ -2,6 +2,8 @@
 
 > Created with Three.js. 
 
+![heightmap](https://i.imgur.com/OgAfytH.png)
+
 Using a black and white image, the pixel color values are extracted and used to create triangular mesh. The values determine the height of the polygons. 
 
 ## Examples 
