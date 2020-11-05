@@ -1,13 +1,24 @@
-A Pen created at CodePen.io. You can find this one at https://codepen.io/pbojinov/pen/NwexpM.
+# Height Maps
 
- # Docs
+> Created with Three.js. 
 
- https://threejs.org/docs/index.html#api/loaders/TextureLoader
+Using a black and white image, the pixel color values are extracted and used to create triangular mesh. The values determine the height of the polygons. 
 
- # Resources
+## Examples 
 
- http://danni-three.blogspot.com/2013/09/threejs-heightmaps.html
+CodeSandbox with Orbital controls – https://codesandbox.io/s/modest-tharp-4oihk
 
- https://github.com/neilcarpenter/Video-filter-effects-for-canvas
+CodePen with static generation (no orbital controls) https://codepen.io/pbojinov/pen/NwexpM.
+
+
+# Resources
  
- http://html5doctor.com/video-canvas-magic/
+* https://threejs.org/docs/index.html#api/loaders/TextureLoader
+
+* https://threejs.org/docs/#examples/en/controls/OrbitControls
+
+* http://danni-three.blogspot.com/2013/09/threejs-heightmaps.html
+
+* https://github.com/neilcarpenter/Video-filter-effects-for-canvas
+  
+* http://html5doctor.com/video-canvas-magic/
