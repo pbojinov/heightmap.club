@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "canvas-filters": "^1.0.1",
-    "three": "0.83.0"
+    "three": "0.137.0"
   },
   "scripts": {
     "build": "node scripts/build.mjs",
