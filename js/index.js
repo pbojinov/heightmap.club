@@ -3,14 +3,14 @@
 var stats;
 
 var renderer = new THREE.WebGLRenderer();
-renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
 
-var controls = new THREE.OrbitControls(camera);
+var controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.addEventListener('change', render); // remove when using animation loop
 // enable animation loop when using damping or autorotation
 //controls.enableDamping = true;
@@ -26,14 +26,27 @@ controls.update();
 
 stats = new Stats();
 stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+stats.dom.style.pointerEvents = 'none';
 document.body.appendChild(stats.dom);
 
+var modelSize;
 window.addEventListener('resize', onWindowResize, false);
 
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    fitModel();
+}
+
+function fitModel() {
+    if (!modelSize) return;
+    var tangent = Math.tan(camera.fov * Math.PI / 360);
+    var distance = Math.max(modelSize.height / (2 * tangent), modelSize.width / (2 * tangent * camera.aspect)) * 1.2 + 20;
+    var direction = camera.position.clone().sub(controls.target).normalize();
+    controls.target.set(0, 0, 8);
+    camera.position.copy(controls.target).add(direction.multiplyScalar(distance));
+    controls.update();
 }
 
 function animate() {
@@ -96,6 +109,8 @@ function main() {
         plane.geometry.vertices[i].z = data[i];
     }
     scene.add(plane);
+    modelSize = { width: image.width / 4, height: image.height / 4 };
+    fitModel();
 }
 
 // const imageUrl = "https://upload.wikimedia.org/wikipedia/commons/5/57/Heightmap.png";

@@ -51,3 +51,9 @@ Embed in a blog post:
 ```
 
 Add a normal link to the demo as an alternative for readers who prefer a separate tab.
+
+### Mobile interaction fix
+
+Orbit controls bind to the rendering canvas. Touch start/move listeners are explicitly non-passive and cancel native scrolling while interacting with the model; overscroll is disabled inside this full-screen demo. The camera fits the image to the current aspect ratio and device pixel ratio is capped at 2. Build output versions the changed CSS and control scripts by content hash so existing browsers receive fixes after a reload.
+
+The local touch regression fixture failed before the fix (neither touch start nor move cancelled) and passes after it (both cancelled, camera moves). Verified at 390×844 CSS pixels.

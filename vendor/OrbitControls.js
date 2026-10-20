@@ -657,6 +657,7 @@ THREE.OrbitControls = function(object, domElement) {
 
     function onTouchStart(event) {
         if (scope.enabled === false) return;
+        if (event.cancelable) event.preventDefault();
 
         switch (event.touches.length) {
             case 1: // one-fingered touch: rotate
@@ -752,11 +753,11 @@ THREE.OrbitControls = function(object, domElement) {
     scope.domElement.addEventListener('contextmenu', onContextMenu, false);
 
     scope.domElement.addEventListener('mousedown', onMouseDown, false);
-    scope.domElement.addEventListener('wheel', onMouseWheel, false);
+    scope.domElement.addEventListener('wheel', onMouseWheel, { passive: false });
 
-    scope.domElement.addEventListener('touchstart', onTouchStart, false);
+    scope.domElement.addEventListener('touchstart', onTouchStart, { passive: false });
     scope.domElement.addEventListener('touchend', onTouchEnd, false);
-    scope.domElement.addEventListener('touchmove', onTouchMove, false);
+    scope.domElement.addEventListener('touchmove', onTouchMove, { passive: false });
 
     window.addEventListener('keydown', onKeyDown, false);
 
